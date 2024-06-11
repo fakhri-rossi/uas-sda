@@ -27,6 +27,99 @@ void buyTicket (string username) {
     updateTicketStatus(username, "menunggu diacc");
 }
 
+void pengunjungDashboardActive(){
+    while(true){
+        int choice;
+        cout << "\n=== Kebun Binatang MyZoo ===\n";
+        cout << "[Temmpat saat ini: " << currentVisitorPlace->name << "]\n";
+        
+        if(currentVisitorPlace->isKandang){
+            cout << currentVisitorPlace->desc << "\n";
+        }
+
+        cout << "1. Lihat Map\n";
+        cout << "2. Pergi ke-\n";
+        cout << "3. Logout\n";
+        cout << "4. Keluar Zoo\n";
+
+        cin >> choice;
+
+        switch(choice){
+            case 1:
+                int nomorTempat;
+                cout << "-- List Lokasi ---\n";
+                cout << "0. Kembali\n";
+                
+                for(int i = 0; i < V; i++){
+                    cout << i+1 << ": " << PLACES[i]->name << "\n";
+                }
+
+                while(true){
+                    cout << "Silahkan pilih nomor lokasi: ";
+                    nomorTempat = inputValidInt() - 1;
+                    
+                    if(nomorTempat == -1){
+                        break;
+
+                    } else if(nomorTempat < V){
+                        dijkstra(graph, currentVisitorPlace, PLACES[nomorTempat]);
+                        string konfirm;
+                        cout << "Pergi ke-" << PLACES[nomorTempat]->name << "? (y untuk ya): ";
+                        cin >> konfirm;
+
+                        if(konfirm == "y" || konfirm == "Y"){
+                            currentVisitorPlace = PLACES[nomorTempat];
+                            break;
+                        }
+
+                    } else {
+                        cout << "Pilihan tidak valid\n";
+                    }
+                }
+                break;
+
+            case 2:
+                
+                cout << "-- List Lokasi ---\n";
+                cout << "0. Kembali\n";
+                for(int i = 0; i < V; i++){
+                    cout << i+1 << ": " << PLACES[i]->name << "\n";
+                }
+                while(true){
+                    cout << "Silahkan pilih nomor lokasi: ";
+                    nomorTempat = inputValidInt() - 1;
+                    
+                    if(nomorTempat == -1){
+                        break;
+
+                    } else if(nomorTempat < V){
+                        cout << "<< Pergi ke" << PLACES[nomorTempat]->name << " >>\n";
+                        currentVisitorPlace = PLACES[nomorTempat];
+                        break;
+
+                    } else {
+                        cout << "Pilihan tidak valid\n";
+                    }
+                }
+                break;
+
+            case 3:
+                USER_FOUND = false;
+                return;
+
+            case 4:
+                USER_FOUND = false;
+                userProfile[3] = "tidak ada";
+                DATABASE_USER[currUserIndex][3] = "tidak ada";
+                return;
+
+            default:
+                cout << "Pilihan tidak valid. Silakan coba lagi." << endl;
+        }
+    }
+}
+
+
 // gunakan tiket
 void useTicket(string username) {
     for (int i = 0; i < jumlahUser; i++) {
