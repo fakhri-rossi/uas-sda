@@ -1,6 +1,6 @@
 #vscode
 .vscode/
-
+build/
 # Prerequisites
 *.d
 
@@ -9,6 +9,8 @@
 *.lo
 *.o
 *.obj
+*.ilk
+*.pdb
 
 # Precompiled Headers
 *.gch
