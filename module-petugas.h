@@ -36,6 +36,8 @@ void kelolaAntrian() {
     int choice;
     bool run = true;
     while(run) {
+        // cout << "\033[2J\033[1;1H";
+        clearScreen();
         cout << "\n Antrian di Locket:" << endl;
         displayQueue();
         cout << "1. Terima Pembelian Tiket dan Beri Tiket" << endl;
@@ -75,6 +77,8 @@ void kelolaAntrian() {
 void petugasDashboard() {
     int choice;
     while(true) {
+        // cout << "\033[2J\033[1;1H";
+        clearScreen();
         cout << "\n Dashboard Petugas" << endl;
         cout << "1. Kelola Antrian" << endl;
         cout << "2. Lihat histori pengunjung terakhir" << endl;

@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include <conio.h>
 #include "moduleGraph.h"
 #include "module-validInput.h"
 #include "GlobalVariables.h"
@@ -39,9 +40,11 @@ void printDatabaseUser(){
 // Register
 void registerUser() {
     if (jumlahUser < MAX_USER) {
-
-        // const int max_pass_length = 100;
-        // char pass[max_pass_length];
+        
+        const int max_pass_length = 100;
+        char pass[max_pass_length];
+        char ch;
+        int i = 0;
 
         string username, password, role;
         while (true)
@@ -55,7 +58,23 @@ void registerUser() {
             }
             
             cout << "Masukkan password : ";
-            password = inputOneWord();
+            // password = inputOneWord();
+            while(true){
+                ch = getch();
+
+                if (ch == '\r'){
+                    pass[i] = '\0';
+                    break;
+                }
+
+                else if (ch == '\b' && i > 0){
+                    cout << "\b \b";
+                    i--;
+                } else if (i < max_pass_length - 1){
+                    pass[i++] = ch;
+                    cout << '*';
+                }
+            }
 
             cout << "\nMasukkan role\n\t1: pengunjung\n\t2: petugas ";
             role = inputOneWord();
@@ -73,7 +92,7 @@ void registerUser() {
                 return;
             }
         }
-        addUser(username, password, role, "tidak ada", jumlahUser);
+        addUser(username, pass, role, "tidak ada", jumlahUser);
         cout << "Pengguna berhasil terdaftar." << endl;
         
     } else {
@@ -83,8 +102,10 @@ void registerUser() {
 
 // login
 void loginUser() {
-    // const int max_pass_length = 100;
-    // char pass[max_pass_length];
+    const int max_pass_length = 100;
+    char pass[max_pass_length];
+    char ch;
+    int i = 0;
 
     string username, password;
     cout << "Masukkan username: ";
@@ -92,10 +113,23 @@ void loginUser() {
 
 
     cout << "Masukkan password: ";
-    password = inputOneWord();
+    while(true){
+        ch = getch();
+
+        if (ch == '\r'){
+            pass[i] = '\0';
+            break;
+        } else if (ch == '\b' && i > 0){
+            cout << "\b \b";
+            i--;
+        } else if (i < max_pass_length - 1){
+            pass[i++] = ch;
+            cout << '*';
+        }
+    }
 
     for (int i = 0; i < jumlahUser; ++i) {
-        if (DATABASE_USER[i][0] == username && DATABASE_USER[i][1] == password) {
+        if (DATABASE_USER[i][0] == username && DATABASE_USER[i][1] == pass) {
             cout << "Login berhasil. Selamat datang, " << username << "!" << endl;
             cout << "Role: " << DATABASE_USER[i][2] << endl;
 
@@ -120,14 +154,16 @@ void loginUser() {
 void dashboardAwal(){
     int choice;
     while(true) {
+        // cout << "\033[2J\033[1;1H";
+        clearScreen();
         cout << "\nMENU AWAL" << endl;
         cout << "1. Daftar" << endl;
         cout << "2. Login" << endl;
         cout << "3. Keluar" << endl;
         
-        cout << "(database array user):\n";
-        printDatabaseUser();
-        cout << endl << endl;
+        // cout << "(database array user):\n";
+        // printDatabaseUser();
+        // cout << endl << endl;
 
         cout << "Pilihan Anda: ";
         choice = inputValidInt();

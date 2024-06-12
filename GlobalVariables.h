@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <cstdlib>
 using namespace std;
 
 const int ukuran = 10;
@@ -21,3 +22,12 @@ string DATABASE_USER[MAX_USER][MAX_COLUMN];
 
 // buat nyimpan data current user
 string userProfile[MAX_COLUMN];
+
+// untuk clear terminal
+void clearScreen() {
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}

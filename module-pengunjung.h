@@ -29,6 +29,8 @@ void buyTicket (string username) {
 
 void pengunjungDashboardActive(){
     while(true){
+        // cout << "\033[2J\033[1;1H";
+        clearScreen();
         int choice;
         cout << "\n=== Kebun Binatang MyZoo ===\n";
         cout << "[Temmpat saat ini: " << currentVisitorPlace->name << "]\n";
@@ -147,6 +149,8 @@ void useTicket(string username) {
 void pengunjungDashboard() {
     int choice;
     while(true) {
+        // cout << "\033[2J\033[1;1H";
+        clearScreen();
         for (int i = 0; i < jumlahUser; i++) {
             if (DATABASE_USER[i][0] == userProfile[0]) {
             cout << "\n Dashboard Pengunjung" << endl;
