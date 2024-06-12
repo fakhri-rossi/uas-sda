@@ -4,18 +4,11 @@
 #include <limits>
 #include <limits.h>
 #include <string>
+#include "GlobalVariables.h"
 
 using namespace std;
 const int V = 12;
 int jumlahKandang = 0;
-
-
-struct Place{
-    int index;
-    string name;
-    bool isKandang;
-    string desc;
-};
 
 struct Track{
     Place *node;

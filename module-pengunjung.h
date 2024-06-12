@@ -9,20 +9,25 @@ using namespace std;
 #include "module-userGate.h"
 #include "moduleGraph.h"
 
+void goTo(Place *newPlace){
+    currentVisitorPlace = newPlace;
+    addPlace(PROFILES[currUserIndex]->historyPlace, newPlace);
+}
+
 // beli tiket
 void buyTicket (string username) {
-    for (int i = 0; i < jumlahUser; i++) {
-        if (DATABASE_USER[i][0] == username) {
-            if (DATABASE_USER[i][3] == "menunggu diacc") {
-                cout << "Anda sedang dalam antrian. Tidak dapat membeli tiket lagi." << endl;
-                return;
-            } 
-            if (DATABASE_USER[i][3] == "belum dipakai") {
-                cout << "Anda sudah memiliki tiket yang masih berlaku. Tidak dapat membeli tiket lagi." << endl;
-                return;
-            }
-        }
-    }
+    // for (int i = 0; i < jumlahUser; i++) {
+    //     if (DATABASE_USER[i][0] == username) {
+    //         if (DATABASE_USER[i][3] == "menunggu diacc") {
+    //             cout << "Anda sedang dalam antrian. Tidak dapat membeli tiket lagi." << endl;
+    //             return;
+    //         } 
+    //         if (DATABASE_USER[i][3] == "belum dipakai") {
+    //             cout << "Anda sudah memiliki tiket yang masih berlaku. Tidak dapat membeli tiket lagi." << endl;
+    //             return;
+    //         }
+    //     }
+    // }
     insertQueue(username);
     updateTicketStatus(username, "menunggu diacc");
 }
@@ -39,8 +44,9 @@ void pengunjungDashboardActive(){
 
         cout << "1. Lihat Map\n";
         cout << "2. Pergi ke-\n";
-        cout << "3. Logout\n";
-        cout << "4. Keluar Zoo\n";
+        cout << "3. Lihat tempat yang sudah dikunjungi\n";
+        cout << "4. Logout\n";
+        cout << "5. Keluar Zoo\n";
 
         cin >> choice;
 
@@ -68,7 +74,7 @@ void pengunjungDashboardActive(){
                         cin >> konfirm;
 
                         if(konfirm == "y" || konfirm == "Y"){
-                            currentVisitorPlace = PLACES[nomorTempat];
+                            goTo(PLACES[nomorTempat]);
                             break;
                         }
 
@@ -94,7 +100,7 @@ void pengunjungDashboardActive(){
 
                     } else if(nomorTempat < V){
                         cout << "<< Pergi ke" << PLACES[nomorTempat]->name << " >>\n";
-                        currentVisitorPlace = PLACES[nomorTempat];
+                        goTo(PLACES[nomorTempat]);
                         break;
 
                     } else {
@@ -102,12 +108,16 @@ void pengunjungDashboardActive(){
                     }
                 }
                 break;
-
+            
             case 3:
+                printHistory(PROFILES[currUserIndex]->historyPlace);
+                break;
+
+            case 4:
                 USER_FOUND = false;
                 return;
 
-            case 4:
+            case 5:
                 USER_FOUND = false;
                 userProfile[3] = "tidak ada";
                 DATABASE_USER[currUserIndex][3] = "tidak ada";
@@ -127,8 +137,9 @@ void useTicket(string username) {
             if (DATABASE_USER[i][3] == "belum dipakai") {
                 DATABASE_USER[i][3] = "aktif";
                 currentVisitorPlace = gerbang;
-                cout << "Tiket Anda sekarang aktif." << endl;
+                cout << "<< Tiket Anda sekarang aktif >>" << endl;
                 pushHistory(userProfile[0]);
+                PROFILES[currUserIndex]->jumlahTiket--;
                 pengunjungDashboardActive();
 
             } else if (DATABASE_USER[i][3] == "aktif") {
@@ -147,35 +158,63 @@ void useTicket(string username) {
 void pengunjungDashboard() {
     int choice;
     while(true) {
-        for (int i = 0; i < jumlahUser; i++) {
-            if (DATABASE_USER[i][0] == userProfile[0]) {
+        if(userProfile[3] == "menunggu diacc"){
             cout << "\n Dashboard Pengunjung" << endl;
             cout << "\nSelamat datang di MyZoo \nHTM: Rp40.000" << endl;
+            cout << "Tiket Anda: " << PROFILES[currUserIndex]->jumlahTiket << endl;
+            cout << "<< Menunggu di-acc oleh petugas >>\n";
+            cout << "0. Logout\n";
+
+            cout << "Pilihan Anda: ";
+            choice = inputValidInt();
+
+            switch (choice) {
+                case 0:
+                    USER_FOUND = false;
+                    return;
+
+                default:
+                    cout << "Pilihan tidak valid. Silakan coba lagi." << endl;
+            }
+
+            // if(PROFILES[currUserIndex]->jumlahTiket > 0){
+            //     cout << "2. Gunakan Tiket Masuk" << endl;
+            // }
+        } else{
+            cout << "\n Dashboard Pengunjung" << endl;
+            cout << "\nSelamat datang di MyZoo \nHTM: Rp40.000" << endl;
+            cout << "Tiket Anda: " << PROFILES[currUserIndex]->jumlahTiket << endl;
+            cout << "0. Logout" << endl;
             cout << "1. Beli Tiket Masuk" << endl;
-            cout << "2. Gunakan Tiket Masuk (" << DATABASE_USER[i][3] << ")" << endl;
-            cout << "3. Logout" << endl;
+
+            if(PROFILES[currUserIndex]->jumlahTiket > 0){
+                cout << "2. Gunakan Tiket Masuk" << endl;
+            }
+            cout << "Pilihan Anda: ";
+            choice = inputValidInt();
+
+            switch (choice) {
+                case 1:
+                    buyTicket(userProfile[0]);
+                    cout << "<< Menunggu di-acc oleh Petugas >>\n";
+                    return;
+
+                case 2:
+                    if(PROFILES[currUserIndex]->jumlahTiket > 0){
+                        useTicket(userProfile[0]);
+                        return;
+                    }
+                    cout << "Pilihan tidak valid. Silakan coba lagi." << endl;
+                    break;
+
+                case 0:
+                    USER_FOUND = false;
+                    return;
+
+                default:
+                    cout << "Pilihan tidak valid. Silakan coba lagi." << endl;
             }
         }
-
-        cout << "Pilihan Anda: ";
-        choice = inputValidInt();
-
-        switch (choice) {
-            case 1:
-                buyTicket(userProfile[0]);
-                break;
-
-            case 2:
-                useTicket(userProfile[0]);
-                return;
-
-            case 3:
-                USER_FOUND = false;
-                return;
-
-            default:
-                cout << "Pilihan tidak valid. Silakan coba lagi." << endl;
-        }
     }
-    
+
 }

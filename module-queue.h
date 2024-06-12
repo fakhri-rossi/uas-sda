@@ -59,6 +59,7 @@ void displayQueue() {
         for (int i = 0; i < q.top; i++) {
             cout << "[" << i << "]: " << q.isi[i] << endl;
         }
+        cout << endl;
     } else {
         cout << "<< kosong >>" << endl;
     }
@@ -69,6 +70,9 @@ void updateTicketStatus(string username, string status) {
     for (int i = 0; i < jumlahUser; i++) {
         if (DATABASE_USER[i][0] == username) {
             DATABASE_USER[i][3] = status;
+            if(status != "menunggu diacc"){
+                PROFILES[i]->jumlahTiket++;
+            }
             break;
         }
     }

@@ -8,6 +8,7 @@ using namespace std;
 #include "module-queue.h"
 
 // Terima Pembelian Tiket dan Beri Tiket
+
 void terimaPembelianTiket () {
     if (isEmpty() == 0) {
         string namaPengunjung = q.isi[0];
@@ -36,7 +37,6 @@ void kelolaAntrian() {
     int choice;
     bool run = true;
     while(run) {
-        cout << "\n Antrian di Locket:" << endl;
         displayQueue();
         cout << "1. Terima Pembelian Tiket dan Beri Tiket" << endl;
         cout << "2. Tolak Pembelian" << endl;

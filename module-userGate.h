@@ -4,17 +4,21 @@
 #include "moduleGraph.h"
 #include "module-validInput.h"
 #include "GlobalVariables.h"
-#include "module-validInput.h"
+#include "module-history.h"
 using namespace std;
 
 int** graph = buatPeta();
 Place *currentVisitorPlace = NULL;
 
-void addUser(string username, string password, string role, string statusTiket, int urutanUser){
+void addUser(string username, string password, string role, string statusTiket, int urutanUser, int jumlahTiket){
     DATABASE_USER[urutanUser][0] = username;
     DATABASE_USER[urutanUser][1] = password;
     DATABASE_USER[urutanUser][2] = role;
     DATABASE_USER[urutanUser][3] = statusTiket;
+
+    PROFILES[urutanUser] = new Profile;
+    PROFILES[urutanUser]->historyPlace = new History;
+    PROFILES[urutanUser]->jumlahTiket = jumlahTiket;
 
     jumlahUser += 1;
 }
@@ -31,7 +35,7 @@ bool isUsernameTaken(const string& username) {
 
 void printDatabaseUser(){
     for(int i = 0; i < jumlahUser; i++){
-        cout << DATABASE_USER[i][0] << ", " << DATABASE_USER[i][1] << ", " << DATABASE_USER[i][2] << ", " << DATABASE_USER[i][3];
+        cout << DATABASE_USER[i][0] << ", " << DATABASE_USER[i][1] << ", " << DATABASE_USER[i][2] << ", " << DATABASE_USER[i][3] << ", " << PROFILES[i]->jumlahTiket;
         cout << endl;
     }
 }
@@ -73,7 +77,8 @@ void registerUser() {
                 return;
             }
         }
-        addUser(username, password, role, "tidak ada", jumlahUser);
+        addUser(username, password, role, "tidak ada", jumlahUser, 0);
+        PROFILES[jumlahUser]->jumlahTiket = 0;
         cout << "Pengguna berhasil terdaftar." << endl;
         
     } else {

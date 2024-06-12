@@ -23,9 +23,9 @@ using namespace std;
 
 
 void initApp(){
-    addUser("syahrul", "123", "pengunjung", "tidak ada", jumlahUser);
-    addUser("aa", "123", "pengunjung", "belum dipakai", jumlahUser);
-    addUser("arul", "123", "petugas", "-", jumlahUser);
+    addUser("syahrul", "123", "pengunjung", "tidak ada", jumlahUser, 0);
+    addUser("aa", "123", "pengunjung", "belum dipakai", jumlahUser, 1);
+    addUser("arul", "123", "petugas", "-", jumlahUser, 0);
     tambahEdge(graph, gerbang, pusat, 10);
 
     tambahEdge(graph, pusat, domba, 15);
