@@ -1,6 +1,7 @@
 #pragma once
-#include <string>
 #include <iostream>
+#include <string>
+#include <conio.h>
 #include "moduleGraph.h"
 #include "module-validInput.h"
 #include "GlobalVariables.h"
@@ -8,7 +9,7 @@
 using namespace std;
 
 int** graph = buatPeta();
-Place *currentVisitorPlace = NULL;
+// Place *currentVisitorPlace = NULL;
 
 void addUser(string username, string password, string role, string statusTiket, int urutanUser, int jumlahTiket){
     DATABASE_USER[urutanUser][0] = username;
@@ -43,9 +44,11 @@ void printDatabaseUser(){
 // Register
 void registerUser() {
     if (jumlahUser < MAX_USER) {
-
-        // const int max_pass_length = 100;
-        // char pass[max_pass_length];
+        
+        const int max_pass_length = 100;
+        char pass[max_pass_length];
+        char ch;
+        int i = 0;
 
         string username, password, role;
         while (true)
@@ -59,7 +62,24 @@ void registerUser() {
             }
             
             cout << "Masukkan password : ";
-            password = inputOneWord();
+            // password = inputOneWord();
+                        // password = inputOneWord();
+            while(true){
+                ch = getch();
+
+                if (ch == '\r'){
+                    pass[i] = '\0';
+                    break;
+                }
+
+                else if (ch == '\b' && i > 0){
+                    cout << "\b \b";
+                    i--;
+                } else if (i < max_pass_length - 1){
+                    pass[i++] = ch;
+                    cout << '*';
+                }
+            }
 
             cout << "\nMasukkan role\n\t1: pengunjung\n\t2: petugas ";
             role = inputOneWord();
@@ -77,8 +97,9 @@ void registerUser() {
                 return;
             }
         }
-        addUser(username, password, role, "tidak ada", jumlahUser, 0);
+        addUser(username, pass, role, "tidak ada", jumlahUser, 0);
         PROFILES[jumlahUser]->jumlahTiket = 0;
+        PROFILES[jumlahUser]->currentVisitorPlace = NULL;
         cout << "Pengguna berhasil terdaftar." << endl;
         
     } else {
@@ -90,6 +111,10 @@ void registerUser() {
 void loginUser() {
     // const int max_pass_length = 100;
     // char pass[max_pass_length];
+    const int max_pass_length = 100;
+    char pass[max_pass_length];
+    char ch;
+    int counter = 0;
 
     string username, password;
     cout << "Masukkan username: ";
@@ -97,10 +122,24 @@ void loginUser() {
 
 
     cout << "Masukkan password: ";
-    password = inputOneWord();
+    // password = inputOneWord();
+    while(true){
+        ch = getch();
+
+        if (ch == '\r'){
+            pass[counter] = '\0';
+            break;
+        } else if (ch == '\b' && counter > 0){
+            cout << "\b \b";
+            counter--;
+        } else if (counter < max_pass_length - 1){
+            pass[counter++] = ch;
+            cout << '*';
+        }
+    }
 
     for (int i = 0; i < jumlahUser; ++i) {
-        if (DATABASE_USER[i][0] == username && DATABASE_USER[i][1] == password) {
+        if (DATABASE_USER[i][0] == username && DATABASE_USER[i][1] == pass) {
             cout << "Login berhasil. Selamat datang, " << username << "!" << endl;
             cout << "Role: " << DATABASE_USER[i][2] << endl;
 
@@ -125,6 +164,7 @@ void loginUser() {
 void dashboardAwal(){
     int choice;
     while(true) {
+        clearScreen();
         cout << "\nMENU AWAL" << endl;
         cout << "1. Daftar" << endl;
         cout << "2. Login" << endl;

@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include <iostream>
+#include <conio.h>
 using namespace std;
 #include "module-history.h"
 #include "GlobalVariables.h"
@@ -10,7 +10,7 @@ using namespace std;
 #include "moduleGraph.h"
 
 void goTo(Place *newPlace){
-    currentVisitorPlace = newPlace;
+    PROFILES[currUserIndex]->currentVisitorPlace = newPlace;
     addPlace(PROFILES[currUserIndex]->historyPlace, newPlace);
 }
 
@@ -34,12 +34,13 @@ void buyTicket (string username) {
 
 void pengunjungDashboardActive(){
     while(true){
+        clearScreen();
         int choice;
         cout << "\n=== Kebun Binatang MyZoo ===\n";
-        cout << "[Temmpat saat ini: " << currentVisitorPlace->name << "]\n";
+        cout << "[Tempat saat ini: " << PROFILES[currUserIndex]->currentVisitorPlace->name << "]\n";
         
-        if(currentVisitorPlace->isKandang){
-            cout << currentVisitorPlace->desc << "\n";
+        if(PROFILES[currUserIndex]->currentVisitorPlace->isKandang){
+            cout << PROFILES[currUserIndex]->currentVisitorPlace->desc << "\n";
         }
 
         cout << "1. Lihat Map\n";
@@ -68,7 +69,7 @@ void pengunjungDashboardActive(){
                         break;
 
                     } else if(nomorTempat < V){
-                        dijkstra(graph, currentVisitorPlace, PLACES[nomorTempat]);
+                        dijkstra(graph, PROFILES[currUserIndex]->currentVisitorPlace, PLACES[nomorTempat]);
                         string konfirm;
                         cout << "Pergi ke-" << PLACES[nomorTempat]->name << "? (y untuk ya): ";
                         cin >> konfirm;
@@ -121,6 +122,7 @@ void pengunjungDashboardActive(){
                 USER_FOUND = false;
                 userProfile[3] = "tidak ada";
                 DATABASE_USER[currUserIndex][3] = "tidak ada";
+                clearHistorylace(PROFILES[currUserIndex]->historyPlace);
                 return;
 
             default:
@@ -136,7 +138,7 @@ void useTicket(string username) {
         if (DATABASE_USER[i][0] == username) {
             if (DATABASE_USER[i][3] == "belum dipakai") {
                 DATABASE_USER[i][3] = "aktif";
-                currentVisitorPlace = gerbang;
+                PROFILES[currUserIndex]->currentVisitorPlace = gerbang;
                 cout << "<< Tiket Anda sekarang aktif >>" << endl;
                 pushHistory(userProfile[0]);
                 PROFILES[currUserIndex]->jumlahTiket--;
@@ -158,6 +160,7 @@ void useTicket(string username) {
 void pengunjungDashboard() {
     int choice;
     while(true) {
+        clearScreen();
         if(userProfile[3] == "menunggu diacc"){
             cout << "\n Dashboard Pengunjung" << endl;
             cout << "\nSelamat datang di MyZoo \nHTM: Rp40.000" << endl;

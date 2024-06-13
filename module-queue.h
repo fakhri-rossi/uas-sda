@@ -57,7 +57,7 @@ void displayQueue() {
     cout << "Antrian di Loket:\n";
     if (isEmpty() == 0) {
         for (int i = 0; i < q.top; i++) {
-            cout << "[" << i << "]: " << q.isi[i] << endl;
+            cout << "[" << i+1 << "]: " << q.isi[i] << endl;
         }
         cout << endl;
     } else {

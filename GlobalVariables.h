@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <cstdlib>
 using namespace std;
 
 struct Place{
@@ -19,15 +20,25 @@ int jumlahUser = 0;
 bool IS_CONTINUE = true;
 bool USER_FOUND = false;
 
-int currUserIndex;
-// int jumlahKandang = 0;
-// const int V = 12;
+string userProfile[MAX_COLUMN];
+
+// untuk clear terminal
+void clearScreen() {
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
+int jumlahKandang = 0;
+const int V = 12;
 
 // nyimpen data semua user
 string DATABASE_USER[MAX_USER][MAX_COLUMN];
+int currUserIndex;
 
 // buat nyimpan data current user
-string userProfile[MAX_COLUMN];
+// string userProfile[MAX_COLUMN];
 
 struct History{
     Place *places[12];
@@ -82,7 +93,8 @@ void printHistory(History *history){
 
 struct Profile{
     int jumlahTiket;
-    History *historyPlace; 
+    History *historyPlace;
+    Place *currentVisitorPlace;
 };
 
 Profile *PROFILES [MAX_USER];

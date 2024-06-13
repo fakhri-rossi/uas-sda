@@ -37,6 +37,7 @@ void kelolaAntrian() {
     int choice;
     bool run = true;
     while(run) {
+        clearScreen();
         displayQueue();
         cout << "1. Terima Pembelian Tiket dan Beri Tiket" << endl;
         cout << "2. Tolak Pembelian" << endl;
@@ -63,6 +64,7 @@ void kelolaAntrian() {
             case 4:
                 cout << "Kembali ke halaman dashboard" << endl;
                 run = false;
+                clearScreen();
                 return;
 
             default:
@@ -73,6 +75,7 @@ void kelolaAntrian() {
 
 // dashboard petugas
 void petugasDashboard() {
+    clearScreen();
     int choice;
     while(true) {
         cout << "\n Dashboard Petugas" << endl;

@@ -7,8 +7,8 @@
 #include "GlobalVariables.h"
 
 using namespace std;
-const int V = 12;
-int jumlahKandang = 0;
+// const int V = 12;
+// int jumlahKandang = 0;
 
 struct Track{
     Place *node;
