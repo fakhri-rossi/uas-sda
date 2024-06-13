@@ -171,7 +171,7 @@ void dashboardAwal(){
         cout << "3. Keluar" << endl;
         
         cout << "(database array user):\n";
-        printDatabaseUser();
+        // printDatabaseUser();
         cout << endl << endl;
 
         cout << "Pilihan Anda: ";
