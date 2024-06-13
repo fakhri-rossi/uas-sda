@@ -49,9 +49,10 @@ void registerUser() {
         char pass[max_pass_length];
         char ch;
         int i = 0;
+        bool continueProgram = true;
 
         string username, password, role;
-        while (true)
+        while (continueProgram)
         {
             cout << "Masukkan username: ";
             username = inputOneWord();
@@ -81,25 +82,25 @@ void registerUser() {
                 }
             }
 
-            cout << "\nMasukkan role\n\t1: pengunjung\n\t2: petugas ";
+            cout << "\nMasukkan role\n\t1: pengunjung\n\t2: petugas \n";
             role = inputOneWord();
+            
+            while(role != "1" && role != "2"){
+                cout << "Role tidak valid. Silakan pilih role yang sesuai." << endl;
+                role = inputOneWord();
+            }
 
             if (role == "1") {
                 role = "pengunjung";
-                break;
 
             } else if (role == "2") {
                 role = "petugas";
-                break;
-
-            } else {
-                cout << "Role tidak valid. Silakan pilih role yang sesuai." << endl;
-                return;
             }
+            continueProgram = false;
         }
         addUser(username, pass, role, "tidak ada", jumlahUser, 0);
-        PROFILES[jumlahUser]->jumlahTiket = 0;
-        PROFILES[jumlahUser]->currentVisitorPlace = NULL;
+        // PROFILES[jumlahUser]->jumlahTiket = 0;
+        // PROFILES[jumlahUser]->currentVisitorPlace = NULL;
         cout << "Pengguna berhasil terdaftar." << endl;
         
     } else {
@@ -171,7 +172,7 @@ void dashboardAwal(){
         cout << "3. Keluar" << endl;
         
         cout << "Pilihan:\n";
-        // printDatabaseUser();
+        printDatabaseUser();
         cout << endl << endl;
 
         cout << "Pilihan Anda: ";
