@@ -170,7 +170,7 @@ void dashboardAwal(){
         cout << "2. Login" << endl;
         cout << "3. Keluar" << endl;
         
-        cout << "(database array user):\n";
+        cout << "Pilihan:\n";
         // printDatabaseUser();
         cout << endl << endl;
 
